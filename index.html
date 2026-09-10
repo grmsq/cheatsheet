@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шпаргалка администратора</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0d1117;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(88, 166, 255, 0.10) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(240, 136, 62, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(126, 231, 135, 0.05) 0%, transparent 60%);
+            background-attachment: fixed;
+            background-size: 200% 200%;
+            animation: bgshift 25s ease-in-out infinite alternate;
+            color: #c9d1d9;
+            padding: 20px;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        @keyframes bgshift {
+            0% {
+                background-position: 0% 0%, 100% 100%, 50% 50%;
+            }
+            100% {
+                background-position: 100% 100%, 0% 0%, 0% 100%;
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #161b22;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #30363d;
+        }
+        h1 {
+            color: #58a6ff;
+            text-align: center;
+            font-size: 28px;
+            border-bottom: 2px solid #30363d;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h2 {
+            color: #f0883e;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        .cmd {
+            background: #0d1117;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border-left: 4px solid #58a6ff;
+            font-size: 14px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #f0f6fc;
+            margin: 12px 0;
+            -webkit-overflow-scrolling: touch;
+        }
+        .desc {
+            color: #8b949e;
+            font-size: 14px;
+            margin-top: 4px;
+            margin-bottom: 16px;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #30363d;
+            margin: 25px 0;
+        }
+
+        details {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            margin: 8px 0;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        details[open] {
+            border-color: #58a6ff;
+        }
+        details:hover {
+            border-color: #58a6ff;
+        }
+        summary {
+            cursor: pointer;
+            padding: 13px 18px;
+            font-size: 15px;
+            color: #58a6ff;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            gap: 10px;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary::after {
+            content: "+";
+            font-size: 20px;
+            color: #f0883e;
+            transition: transform 0.2s;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        details[open] summary::after {
+            content: "−";
+        }
+        details[open] summary {
+            border-bottom: 1px solid #30363d;
+        }
+        .details-body {
+            padding: 14px 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 16px 0;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #30363d;
+        }
+        th {
+            color: #58a6ff;
+            background: #161b22;
+            font-weight: normal;
+        }
+        tr:last-child td { border-bottom: none; }
+        .note {
+            color: #7ee787;
+            font-size: 13px;
+            border-left: 3px solid #7ee787;
+            padding-left: 10px;
+            margin: 10px 0;
+        }
+        .warn {
+            color: #f0883e;
+            font-size: 13px;
+            border-left: 3px solid #f0883e;
+            padding-left: 10px;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 20px 16px;
+                border-radius: 12px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            h2 {
+                font-size: 18px;
+                margin-top: 25px;
+            }
+            .cmd {
+                font-size: 13px;
+                padding: 9px 12px;
+            }
+            .desc {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 6px;
+                font-size: 14px;
+                animation: none;
+            }
+            .container {
+                padding: 14px 10px;
+                border-radius: 10px;
+            }
+            h1 {
+                font-size: 19px;
+                padding-bottom: 8px;
+            }
+            h2 {
+                font-size: 16px;
+                margin-top: 20px;
+                margin-bottom: 10px;
+            }
+            .cmd {
+                font-size: 12px;
+                padding: 8px 10px;
+                border-left-width: 3px;
+                word-break: break-word;
+            }
+            .desc {
+                font-size: 12px;
+            }
+            summary {
+                padding: 14px 12px;
+                font-size: 14px;
+                min-height: 48px;
+            }
+            summary::after {
+                font-size: 22px;
+            }
+            .details-body {
+                padding: 12px;
+            }
+            table {
+                font-size: 12px;
+            }
+            th, td {
+                padding: 6px 8px;
+            }
+            .note, .warn {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .cmd {
+                font-size: 11px;
+            }
+            summary {
+                font-size: 13px;
+                padding: 12px 10px;
+            }
+            h1 {
+                font-size: 17px;
+            }
+            h2 {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🧠 Записки сумасшедшего</h1>
+    <p style="text-align:center; color:#8b949e;">
+        Proxmox · Linux · SSH · Сеть · Бэкапы
+    </p>
+    <p style="text-align:center; color:#8b949e; font-size:13px;">
+        Нажми на любой пункт, чтобы раскрыть 👇
+    </p>
+
+    <!-- ==================== 1. PROXMOX ==================== -->
+    <h2>1. 📦 Proxmox VE</h2>
+
+    <details>
+        <summary>💽 Посмотреть диски</summary>
+        <div class="details-body">
+            <div class="cmd">lsblk</div>
+            <div class="desc">Показывает все диски и разделы в виде дерева.</div>
+            <div class="note">Видишь sda, sdb — это физические диски. sda1, sda2 — разделы на них.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>✂️ Разметить диск</summary>
+        <div class="details-body">
+            <div class="cmd">fdisk /dev/sda</div>
+            <div class="desc">Интерактивная утилита разметки.</div>
+            <div class="desc">Порядок: <code>g</code> — новая GPT-таблица → <code>n</code> — новый раздел → <code>w</code> — записать.</div>
+            <div class="warn">Осторожно: fdisk затрёт данные на диске. Убедись, что выбрал правильный диск.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🧱 Форматировать раздел</summary>
+        <div class="details-body">
+            <div class="cmd">mkfs.ext4 /dev/sda1</div>
+            <div class="desc">Создаёт файловую систему EXT4 на разделе sda1.</div>
+            <div class="note">EXT4 — стандарт для Linux. Надёжно, умеет журналирование.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>📁 Смонтировать диск</summary>
+        <div class="details-body">
+            <div class="cmd">mkdir /mnt/vmstorage</div>
+            <div class="desc">Создать папку, куда примонтируем диск.</div>
+            <div class="cmd">mount /dev/sda1 /mnt/vmstorage</div>
+            <div class="desc">Примонтировать раздел в эту папку.</div>
+            <div class="cmd">df -h /mnt/vmstorage</div>
+            <div class="desc">Проверить, что диск появился и сколько места.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🔁 Автозагрузка диска (fstab)</summary>
+        <div class="details-body">
+            <div class="cmd">nano /etc/fstab</div>
+            <div class="desc">Добавь строку:</div>
+            <div class="cmd">/dev/sda1 /mnt/vmstorage ext4 defaults 0 2</div>
+            <div class="desc">Теперь диск будет монтироваться сам при загрузке.</div>
+            <div class="warn">Ошибка в fstab → система может не загрузиться. Проверяй внимательно.</div>
+        </div>
+    </details>
+
+    <hr>
+
+    <!-- ==================== 2. LINUX ==================== -->
+    <h2>2. 🐧 Linux (Ubuntu)</h2>
+
+    <details>
+        <summary>👤 Кто я сейчас</summary>
+        <div class="details-body">
+            <div class="cmd">whoami</div>
+            <div class="desc">Показывает текущего пользователя.</div>
+            <div class="note">Если вывело root — ты под админом. Если имя пользователя — обычный юзер.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🌐 Посмотреть IP-адреса</summary>
+        <div class="details-body">
+            <div class="cmd">ip a</div>
+            <div class="desc">Показывает все сетевые интерфейсы и их IP.</div>
+            <div class="note">Ищи строку <code>inet 192.168.x.x</code> — это твой IPv4-адрес.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>📂 Файлы в папке</summary>
+        <div class="details-body">
+            <div class="cmd">ls -la</div>
+            <div class="desc">Показывает все файлы, включая скрытые (те, что начинаются с точки).</div>
+            <div class="note">Флаг <code>-l</code> — подробно, <code>-a</code> — включая скрытые.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🔑 Стать root</summary>
+        <div class="details-body">
+            <div class="cmd">sudo -i</div>
+            <div class="desc">Переключает на root-пользователя.</div>
+            <div class="warn">Под root можно сломать всё. Используй только когда реально надо.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🔒 Сменить пароль root</summary>
+        <div class="details-body">
+            <div class="cmd">passwd root</div>
+            <div class="desc">Задаёт новый пароль для root. Спросит дважды.</div>
+            <div class="note">Работает и для других пользователей: <code>passwd admin</code>.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>💾 Свободное место</summary>
+        <div class="details-body">
+            <div class="cmd">df -h</div>
+            <div class="desc">Показывает все диски и сколько на них свободно.</div>
+            <div class="note">Флаг <code>-h</code> — в человеческих единицах (ГБ, МБ), а не в блоках.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🔄 Принудительная перезагрузка</summary>
+        <div class="details-body">
+            <div class="cmd">reboot -f</div>
+            <div class="desc">Перезагружает систему немедленно, без нормального выключения служб.</div>
+            <div class="warn">Флаг <code>-f</code> = force. Может привести к потере данных. Обычно хватает просто <code>reboot</code>.</div>
+        </div>
+    </details>
+
+    <hr>
+
+    <!-- ==================== 3. GRUB ==================== -->
+    <h2>3. 🔐 GRUB (сброс пароля)</h2>
+
+    <details>
+        <summary>🚪 Войти в редактор GRUB</summary>
+        <div class="details-body">
+            <div class="desc">При загрузке, когда появится меню GRUB, нажми <span style="color:#f0883e;">e</span>.</div>
+            <div class="note">Если меню не появляется — зажми Shift при загрузке или Esc (зависит от системы).</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>✏️ Изменить строку загрузки</summary>
+        <div class="details-body">
+            <div class="desc">Найди строку, начинающуюся с <code>linux</code>. В конец допиши:</div>
+            <div class="cmd">init=/bin/bash</div>
+            <div class="desc">Затем нажми <span style="color:#f0883e;">Ctrl+X</span>, чтобы загрузиться.</div>
+            <div class="note">Это запустит систему сразу в bash от root, минуя пароль.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>📂 Размонтировать корень в rw</summary>
+        <div class="details-body">
+            <div class="cmd">mount -o remount,rw /</div>
+            <div class="desc">Делает корневую ФС доступной для записи.</div>
+            <div class="warn">Без этого пароль сменить не получится — корень только для чтения.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🔑 Сменить пароль</summary>
+        <div class="details-body">
+            <div class="cmd">passwd root</div>
+            <div class="desc">Задаёт новый пароль root.</div>
+            <div class="note">После смены — <code>exec /sbin/init</code> или перезагрузка.</div>
+        </div>
+    </details>
+
+    <hr>
+
+    <!-- ==================== 4. NGINX ==================== -->
+    <h2>4. 🌐 Веб-сервер (Nginx)</h2>
+
+    <details>
+        <summary>📥 Установка Nginx</summary>
+        <div class="details-body">
+            <div class="cmd">sudo apt install nginx -y</div>
+            <div class="desc">Ставит Nginx и сразу запускает его.</div>
+            <div class="note">Флаг <code>-y</code> — автоматически отвечать «да» на все вопросы.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>✅ Проверить статус</summary>
+        <div class="details-body">
+            <div class="cmd">sudo systemctl status nginx</div>
+            <div class="desc">Показывает, работает ли Nginx.</div>
+            <div class="note">Зелёное <code>active (running)</code> — всё хорошо. Красное — что-то сломано.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🔄 Перезагрузить конфигурацию</summary>
+        <div class="details-body">
+            <div class="cmd">sudo systemctl reload nginx</div>
+            <div class="desc">Перечитывает конфиги без остановки сервера.</div>
+            <div class="note">Reload лучше restart — не рвёт активные соединения.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>📝 Редактировать главную страницу</summary>
+        <div class="details-body">
+            <div class="cmd">sudo nano /var/www/html/index.html</div>
+            <div class="desc">Открывает главную страницу сайта.</div>
+            <div class="warn">Файл принадлежит root — поэтому нужен sudo, иначе будет «Permission denied».</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🔍 Проверить конфиг и логи</summary>
+        <div class="details-body">
+            <div class="cmd">sudo nginx -t</div>
+            <div class="desc">Проверяет синтаксис конфигов, ничего не применяя.</div>
+            <div class="cmd">sudo tail -f /var/log/nginx/error.log</div>
+            <div class="desc">Смотрит ошибки Nginx в реальном времени.</div>
+            <div class="note">Полезно, когда сайт не открывается и непонятно почему.</div>
+        </div>
+    </details>
+
+    <hr>
+
+    <!-- ==================== 5. SSH ==================== -->
+    <h2>5. 🔌 SSH и доступ</h2>
+
+    <details>
+        <summary>🚪 Подключиться по SSH</summary>
+        <div class="details-body">
+            <div class="cmd">ssh pve_danil@192.168.0.112</div>
+            <div class="desc">Подключается к ВМ под пользователем pve_danil.</div>
+            <div class="cmd">ssh root@192.168.0.112</div>
+            <div class="desc">Подключается под root (если разрешено).</div>
+            <div class="warn">По умолчанию root-логин по SSH отключён — это правильно с точки зрения безопасности.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🔄 Перезапустить SSH</summary>
+        <div class="details-body">
+            <div class="cmd">sudo systemctl restart ssh</div>
+            <div class="desc">Перезапускает SSH-сервер.</div>
+            <div class="warn">Если ты подключён по SSH — текущая сессия не оборвётся, но новые подключения на секунду могут не проходить.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🔑 SSH по ключу</summary>
+        <div class="details-body">
+            <div class="desc">На клиенте сгенерировать ключ:</div>
+            <div class="cmd">ssh-keygen -t ed25519 -C "комментарий"</div>
+            <div class="desc">Скопировать публичный ключ на сервер:</div>
+            <div class="cmd">ssh-copy-id user@192.168.0.112</div>
+            <div class="note">После этого вход — без пароля. И можно отключить PasswordAuthentication в sshd_config.</div>
+        </div>
+    </details>
+
+    <hr>
+
+    <!-- ==================== 6. ОШИБКИ ==================== -->
+    <h2>6. ⚠️ Типичные ошибки</h2>
+
+    <details>
+        <summary>🚫 Permission denied (publickey,password)</summary>
+        <div class="details-body">
+            <div class="desc">SSH не пускает — неверный логин, пароль или ключ.</div>
+            <div class="note">Проверь: имя пользователя, наличие ключа, права на ~/.ssh (700) и authorized_keys (600).</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>💥 dpkg was interrupted</summary>
+        <div class="details-body">
+            <div class="desc">Установка пакета прервалась (например, выключили питание).</div>
+            <div class="cmd">sudo dpkg --configure -a</div>
+            <div class="desc">Завершает настройку прерванных пакетов.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🔤 Иероглифы на сайте</summary>
+        <div class="details-body">
+            <div class="desc">Браузер не знает кодировку и показывает «кракозябры».</div>
+            <div class="desc">Добавь в <code>&lt;head&gt;</code> HTML-файла:</div>
+            <div class="cmd">&lt;meta charset="UTF-8"&gt;</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🚷 Permission denied при записи файла</summary>
+        <div class="details-body">
+            <div class="desc">Пытаешься писать туда, где нужен root.</div>
+            <div class="desc">Либо открывай через <code>sudo nano</code>, либо поменяй владельца:</div>
+            <div class="cmd">sudo chown www-data:www-data /var/www/html/index.html</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🌐 Сайт не открывается</summary>
+        <div class="details-body">
+            <div class="desc">Что проверить по порядку:</div>
+            <div class="cmd">sudo systemctl status nginx</div>
+            <div class="cmd">sudo ss -tulpn | grep :80</div>
+            <div class="cmd">sudo ufw status</div>
+            <div class="cmd">sudo tail -f /var/log/nginx/error.log</div>
+            <div class="note">Nginx работает? Порт слушается? Фаервол пускает? В логах что?</div>
+        </div>
+    </details>
+
+    <hr>
+
+    <!-- ==================== 7. СЕТИ ==================== -->
+    <h2>7. 🌐 Сети простыми словами</h2>
+
+    <details>
+        <summary>📮 IP-адрес — что это?</summary>
+        <div class="details-body">
+            <div class="desc">Уникальный номер устройства в сети. Как номер квартиры — чтобы данные нашли нужную машину.</div>
+            <div class="cmd">192.168.1.50</div>
+            <div class="desc">Четыре числа от 0 до 255. Всё.</div>
+            <div class="note">127.0.0.1 — это «я сам». 192.168.x.x — домашняя сеть.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>📏 Маска — что это?</summary>
+        <div class="details-body">
+            <div class="desc">Показывает, где кончается «улица» и начинается «дом». То есть какая часть адреса — сеть, а какая — конкретная машина.</div>
+            <div class="cmd">192.168.1.50/24</div>
+            <div class="desc">«/24» значит: первые три числа — сеть, последнее — машина.</div>
+            <div class="note">Если у соседа тоже 192.168.1.X — вы в одной сети, видитесь напрямую.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🚪 Шлюз — что это?</summary>
+        <div class="details-body">
+            <div class="desc">Это роутер. Через него уходишь в интернет — как через дверь из квартиры на улицу.</div>
+            <div class="cmd">ip route | grep default</div>
+            <div class="desc">Покажет шлюз, обычно 192.168.1.1</div>
+            <div class="warn">Сосед — напрямую. Интернет — через шлюз.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>📖 DNS — что это?</summary>
+        <div class="details-body">
+            <div class="desc">Переводчик имён. Ты пишешь google.com, DNS говорит: «это 142.250.185.78».</div>
+            <div class="cmd">8.8.8.8 · 1.1.1.1</div>
+            <div class="desc">Публичные DNS-серверы.</div>
+            <div class="warn">ping 8.8.8.8 работает, ping google.com — нет. Значит сломан DNS.</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🔢 Порт — что это?</summary>
+        <div class="details-body">
+            <div class="desc">IP — адрес дома, порт — номер квартиры. На одном IP много служб, порт говорит, в какую стучаться.</div>
+            <table>
+                <tr><th>Порт</th><th>Что там</th></tr>
+                <tr><td>22</td><td>SSH</td></tr>
+                <tr><td>80</td><td>сайт (HTTP)</td></tr>
+                <tr><td>443</td><td>сайт (HTTPS)</td></tr>
+                <tr><td>53</td><td>DNS</td></tr>
+                <tr><td>3389</td><td>RDP (Windows)</td></tr>
+                <tr><td>3000</td><td>Grafana</td></tr>
+                <tr><td>9090</td><td>Prometheus</td></tr>
+            </table>
+            <div class="cmd">sudo ss -tulpn</div>
+            <div class="desc">Показать, кто какие порты слушает</div>
+        </div>
+    </details>
+
+    <details>
+        <summary>🎯 Как всё работает вместе</summary>
+        <div class="details-body">
+            <div class="desc">Открываешь сайт — что происходит по шагам:</div>
+            <div class="note">DNS дал IP → маска сказала «не моя сеть» → отправил через шлюз → постучался в порт 443. Страница открылась.</div>
+        </div>
+    </details>
+
+    <hr>
+
+    <p style="text-align:center; color:#8b949e; font-size:13px;">
+        🛠️ Последнее обновление: 09.09.2026
+    </p>
+</div>
+</body>
+</html>
